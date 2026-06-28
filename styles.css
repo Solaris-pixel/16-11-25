@@ -1,0 +1,334 @@
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── CSS VARIABLES ── */
+:root {
+  --deep-plum:    #1a0022;
+  --royal-purple: #4b0082;
+  --crimson:      #9b1b30;
+  --rose-red:     #c0392b;
+  --blush:        #e8a0b0;
+  --gold:         #d4af6e;
+  --white:        #ffffff;
+}
+
+/* ── BASE ── */
+html, body {
+  height: 100%;
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--deep-plum);
+  overflow: hidden;
+}
+
+canvas#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+#petals {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ── PAGES ── */
+.page {
+  position: fixed;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  padding: 2rem;
+}
+.page.active {
+  display: flex;
+}
+
+/* ── PAGE BACKGROUNDS ── */
+#page-1 {
+  background:
+    radial-gradient(ellipse at 30% 40%, #5c0a6e55 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 60%, #7b0a2a55 0%, transparent 60%),
+    linear-gradient(160deg, #1a0022 0%, #2d0038 40%, #1a0010 100%);
+}
+#page-2 {
+  background:
+    radial-gradient(ellipse at 60% 30%, #4b008244 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 70%, #9b1b3044 0%, transparent 55%),
+    linear-gradient(200deg, #1a0022 0%, #15001a 50%, #1a0010 100%);
+}
+#page-3 {
+  background:
+    radial-gradient(ellipse at 50% 20%, #6b0a8055 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, #7b0a2a44 0%, transparent 50%),
+    linear-gradient(180deg, #1a0022 0%, #200028 50%, #1a0010 100%);
+  overflow-y: auto;
+}
+#page-4 {
+  background:
+    radial-gradient(ellipse at 50% 50%, #5c0a6e77 0%, transparent 65%),
+    linear-gradient(160deg, #1a0022 0%, #150018 100%);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1);   opacity: .7; }
+  50%       { transform: scale(1.2); opacity: 1;  }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0);     }
+  50%       { transform: translateY(-14px); }
+}
+@keyframes shake {
+  0%,  100% { transform: translateX(0);   }
+  20%        { transform: translateX(-8px); }
+  40%        { transform: translateX(8px);  }
+  60%        { transform: translateX(-6px); }
+  80%        { transform: translateX(6px);  }
+}
+@keyframes fall {
+  0%   { transform: translateY(-60px) rotate(0deg);   opacity: 0;  }
+  10%  { opacity: .6; }
+  90%  { opacity: .4; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0;  }
+}
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.anim-up { animation: fadeUp 1s ease both; }
+
+/* ── TYPOGRAPHY ── */
+.eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: .68rem;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: .7;
+  margin-bottom: 1.2rem;
+}
+
+.display {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  background: linear-gradient(135deg, var(--blush) 0%, var(--white) 45%, var(--gold) 75%, var(--blush) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 28px rgba(192, 57, 91, .4));
+  line-height: 1.1;
+}
+
+.script-sm {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  font-style: italic;
+  color: var(--blush);
+  opacity: .7;
+  margin-bottom: 2.8rem;
+}
+
+/* ── HEARTS ROW ── */
+.hearts {
+  display: flex;
+  gap: .6rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+.hearts span                  { font-size: 1rem; animation: pulse 2s ease-in-out infinite; }
+.hearts span:nth-child(2)     { animation-delay: .3s;  }
+.hearts span:nth-child(3)     { animation-delay: .6s;  }
+.hearts span:nth-child(4)     { animation-delay: .9s;  }
+.hearts span:nth-child(5)     { animation-delay: 1.2s; }
+
+/* ── BUTTON ── */
+.btn {
+  position: relative;
+  display: inline-block;
+  padding: .95rem 2.8rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: transparent;
+  border: 1px solid rgba(212, 175, 110, .45);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all .35s ease;
+  outline: none;
+  z-index: 0;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--crimson), var(--royal-purple));
+  opacity: 0;
+  transition: opacity .35s ease;
+  z-index: -1;
+}
+.btn:hover::before  { opacity: 1; }
+.btn:hover {
+  border-color: transparent;
+  box-shadow: 0 0 28px rgba(155, 27, 48, .5), 0 0 55px rgba(75, 0, 130, .3);
+  transform: translateY(-2px);
+}
+.btn:active { transform: translateY(0); }
+
+/* ── PAGE 1 ── */
+#page-1 .content { text-align: center; }
+#page-1 .title   { font-size: clamp(3.5rem, 12vw, 7rem); margin-bottom: .3rem; }
+
+/* ── PAGE 2 ── */
+.card {
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid rgba(212, 175, 110, .15);
+  padding: 3.5rem 3rem;
+  width: min(420px, 90vw);
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+.card .title {
+  font-size: clamp(1.7rem, 5vw, 2.5rem);
+  color: var(--white);
+  margin-bottom: .5rem;
+}
+.card-hint {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--blush);
+  opacity: .65;
+  margin-bottom: 2.2rem;
+  line-height: 1.7;
+}
+.pwd-input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(212, 175, 110, .25);
+  color: var(--white);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  letter-spacing: .25em;
+  text-align: center;
+  outline: none;
+  transition: border-color .3s, box-shadow .3s;
+  margin-bottom: .8rem;
+}
+.pwd-input::placeholder {
+  color: rgba(255, 255, 255, .22);
+  letter-spacing: .1em;
+  font-size: .82rem;
+  font-family: 'Montserrat', sans-serif;
+}
+.pwd-input:focus {
+  border-color: rgba(212, 175, 110, .6);
+  box-shadow: 0 0 20px rgba(155, 27, 48, .25);
+}
+.pwd-input.shake {
+  animation: shake .45s ease;
+  border-color: var(--rose-red);
+}
+.error-msg {
+  font-family: 'Montserrat', sans-serif;
+  font-size: .7rem;
+  color: var(--rose-red);
+  letter-spacing: .08em;
+  min-height: 1.4rem;
+  margin-bottom: 1.4rem;
+}
+
+/* ── PAGE 3 ── */
+#page-3 .inner {
+  max-width: 640px;
+  width: 100%;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+.note-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  animation: pulse 2.5s ease-in-out infinite;
+  display: block;
+}
+.note-to {
+  font-family: 'Montserrat', sans-serif;
+  font-size: .68rem;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: .7;
+  margin-bottom: .9rem;
+}
+.note-name    { font-size: clamp(2.2rem, 7vw, 3.8rem); margin-bottom: 1.8rem; }
+.divider      { width: 80px; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 0 auto 2rem; }
+.note-body    { font-size: clamp(1rem, 2.5vw, 1.22rem); font-weight: 300; color: rgba(255, 255, 255, .85); line-height: 2.1; font-style: italic; margin-bottom: 2.2rem; }
+.note-sign    { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--blush); opacity: .7; font-style: italic; margin-bottom: 3rem; }
+
+/* ── PAGE 4 ── */
+#page-4 .inner {
+  text-align: center;
+  max-width: 560px;
+  animation: fadein 1.2s ease both;
+}
+.book-icon {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 1.6rem;
+  animation: float 3s ease-in-out infinite;
+}
+.final-msg {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 5vw, 2.6rem);
+  font-style: italic;
+  color: var(--white);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.final-msg .accent {
+  background: linear-gradient(135deg, var(--blush), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.final-sub {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--blush);
+  opacity: .5;
+  letter-spacing: .05em;
+  margin-bottom: 2.8rem;
+}
+
+/* ── PETALS ── */
+.petal {
+  position: absolute;
+  pointer-events: none;
+  font-size: 1rem;
+  animation: fall linear infinite;
+  opacity: 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  .card      { padding: 2.5rem 1.6rem; }
+  .note-body { line-height: 1.9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

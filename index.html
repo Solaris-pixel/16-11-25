@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>16:11:25</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div id="petals"></div>
+
+  <!-- ═══ PAGE 1 : LANDING ═══ -->
+  <section class="page active" id="page-1">
+    <div class="content anim-up">
+      <p class="eyebrow">✦ &nbsp; A message just for you &nbsp; ✦</p>
+      <h1 class="display title">Hi Babe</h1>
+      <p class="script-sm">There's something I've been wanting to ask you…</p>
+      <div class="hearts">
+        <span>🌹</span><span>💜</span><span>🌹</span>
+      </div>
+      <button class="btn" onclick="goTo(2)">Continue &nbsp; →</button>
+    </div>
+  </section>
+
+  <!-- ═══ PAGE 2 : PASSWORD ═══ -->
+  <section class="page" id="page-2">
+    <div class="card anim-up">
+      <p class="eyebrow">✦ &nbsp; Private Access &nbsp; ✦</p>
+      <h2 class="display title">Enter the Secret</h2>
+      <p class="card-hint">You know the number<br/>that lives in my heart…</p>
+      <input
+        class="pwd-input"
+        id="pwd-input"
+        type="password"
+        placeholder="· · · · · · · ·"
+        maxlength="10"
+        autocomplete="off"
+        onkeydown="if(event.key === 'Enter') checkPwd()"
+      />
+      <p class="error-msg" id="error-msg"></p>
+      <button class="btn" onclick="checkPwd()">Unlock &nbsp; 🔐</button>
+    </div>
+  </section>
+
+  <!-- ═══ PAGE 3 : LOVE NOTE ═══ -->
+  <section class="page" id="page-3">
+    <div class="inner anim-up">
+      <span class="note-icon">💜</span>
+      <p class="note-to">For the most beautiful girl —</p>
+      <h2 class="display note-name">Amanda</h2>
+      <div class="divider"></div>
+      <p class="note-body">
+        From the moment you came into my life,<br/>
+        you turned ordinary moments into something<br/>
+        I never want to forget.<br/><br/>
+        Your laugh is my favourite sound.<br/>
+        Your presence is my favourite place.<br/>
+        And loving you quietly has been<br/>
+        the sweetest thing I've ever done.<br/><br/>
+        But I no longer want to love you quietly, Amanda.<br/>
+        I want the whole world to know —<br/>
+        <em>you are my person.</em>
+      </p>
+      <p class="note-sign">— Always yours 🌹</p>
+      <button class="btn" onclick="goTo(4)">There's more &nbsp; →</button>
+    </div>
+  </section>
+
+  <!-- ═══ PAGE 4 : FINAL ═══ -->
+  <section class="page" id="page-4">
+    <div class="inner">
+      <span class="book-icon">📖</span>
+      <p class="final-msg">
+        <span class="accent">"Open the book</span><br/>
+        to the first page,<br/>
+        <span class="accent">my love."</span>
+      </p>
+      <p class="final-sub">Everything begins there.</p>
+      <div class="hearts">
+        <span>🌹</span><span>💜</span><span>❤️</span><span>💜</span><span>🌹</span>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
